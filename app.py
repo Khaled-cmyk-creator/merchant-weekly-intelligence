@@ -15,16 +15,17 @@ st.set_page_config(
 )
 
 # ============================================================
-# DESIGN SYSTEM — matched to the presentation visual language
+# DESIGN SYSTEM — aligned with the presentation
 # ============================================================
 
 DEEP_GREEN = "#07583B"
 MID_GREEN = "#168A5B"
 LIGHT_GREEN = "#EAF4EE"
 SOFT_GREEN = "#DCEEE4"
+PALE_GREEN = "#BFDCCB"
 OFF_WHITE = "#F8FAF7"
 TEXT = "#183029"
-MUTED = "#68766F"
+MUTED = "#56665F"
 AMBER = "#C8892B"
 LIGHT_AMBER = "#FFF5E6"
 BORDER = "#DDE7E1"
@@ -38,9 +39,9 @@ st.markdown(
         }}
 
         .block-container {{
-            max-width: 1180px;
-            padding-top: 1.2rem;
-            padding-bottom: 3rem;
+            max-width: 1120px;
+            padding-top: 1rem;
+            padding-bottom: 2.5rem;
         }}
 
         h1, h2, h3 {{
@@ -49,83 +50,82 @@ st.markdown(
         }}
 
         h1 {{
-            font-weight: 750;
+            font-weight: 800;
         }}
 
         h2 {{
-            font-weight: 700;
-            margin-top: 1.4rem;
+            font-weight: 750;
+            margin-top: 1.1rem;
         }}
 
         p, div, span, label {{
-            line-height: 1.45;
+            line-height: 1.42;
         }}
 
-        /* Hero */
+        /* Smaller hero */
         .hero {{
             background: {DEEP_GREEN};
             color: white;
-            border-radius: 22px;
-            padding: 34px 38px 28px 38px;
-            margin-bottom: 24px;
+            border-radius: 20px;
+            padding: 24px 30px 22px 30px;
+            margin-bottom: 20px;
         }}
 
         .hero-kicker {{
-            font-size: 0.78rem;
-            letter-spacing: 0.15em;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: #BBD9C9;
-            font-weight: 700;
-            margin-bottom: 8px;
+            color: #BED8CA;
+            font-weight: 800;
+            margin-bottom: 5px;
         }}
 
         .hero-title {{
-            font-size: 2.4rem;
-            line-height: 1.05;
+            font-size: 2rem;
+            line-height: 1.08;
             font-weight: 800;
             margin: 0;
             color: white;
         }}
 
         .hero-subtitle {{
-            margin-top: 10px;
-            color: #E5F0EA;
-            font-size: 1.02rem;
+            margin-top: 6px;
+            color: #E7F0EB;
+            font-size: 0.96rem;
         }}
 
         .hero-meta {{
-            margin-top: 18px;
+            margin-top: 12px;
             display: inline-block;
             background: rgba(255,255,255,0.10);
             border: 1px solid rgba(255,255,255,0.16);
             border-radius: 999px;
-            padding: 7px 12px;
-            font-size: 0.86rem;
+            padding: 5px 10px;
+            font-size: 0.79rem;
             color: white;
         }}
 
-        /* Section kicker */
         .section-kicker {{
             display: inline-block;
             background: {SOFT_GREEN};
             color: {DEEP_GREEN};
             border-radius: 999px;
-            padding: 6px 11px;
+            padding: 5px 10px;
             text-transform: uppercase;
-            letter-spacing: 0.09em;
-            font-size: 0.72rem;
+            letter-spacing: 0.085em;
+            font-size: 0.68rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }}
 
-        /* Insight cards */
+        /* Tighter insight cards */
         .insight-card {{
             background: {LIGHT_GREEN};
             border: 1px solid {BORDER};
-            border-radius: 16px;
-            padding: 19px 20px;
-            min-height: 132px;
-            margin-bottom: 12px;
+            border-radius: 15px;
+            padding: 16px 18px;
+            min-height: 112px;
+            margin-bottom: 10px;
         }}
 
         .insight-card.good {{
@@ -144,42 +144,40 @@ st.markdown(
         .insight-label {{
             color: {DEEP_GREEN};
             font-weight: 800;
-            font-size: 1.02rem;
-            margin-bottom: 6px;
+            font-size: 0.92rem;
+            margin-bottom: 4px;
         }}
 
         .insight-big {{
             color: {DEEP_GREEN};
-            font-size: 1.65rem;
+            font-size: 1.55rem;
             font-weight: 800;
             line-height: 1.05;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }}
 
         .insight-copy {{
             color: {TEXT};
-            font-size: 0.95rem;
+            font-size: 0.90rem;
         }}
 
-        /* Status pill */
         .status-pill {{
             display: inline-block;
-            margin-top: 8px;
+            margin-top: 7px;
             background: {SOFT_GREEN};
             color: {DEEP_GREEN};
             border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 0.82rem;
-            font-weight: 700;
+            padding: 5px 9px;
+            font-size: 0.76rem;
+            font-weight: 800;
         }}
 
-        /* Chat / prompt area */
         .assistant-intro {{
             background: white;
             border: 1px solid {BORDER};
-            border-radius: 18px;
-            padding: 18px 20px;
-            margin-bottom: 12px;
+            border-radius: 16px;
+            padding: 15px 17px;
+            margin-bottom: 10px;
         }}
 
         .assistant-badge {{
@@ -187,20 +185,34 @@ st.markdown(
             background: {DEEP_GREEN};
             color: white;
             border-radius: 999px;
-            padding: 5px 10px;
-            font-size: 0.75rem;
+            padding: 4px 9px;
+            font-size: 0.70rem;
             font-weight: 800;
+            margin-bottom: 6px;
+        }}
+
+        .assistant-copy {{
+            color: {TEXT};
+            font-size: 0.91rem;
+        }}
+
+        .chat-shell {{
+            background: white;
+            border: 1px solid {BORDER};
+            border-radius: 16px;
+            padding: 12px 14px 6px 14px;
+            margin-top: 8px;
             margin-bottom: 8px;
         }}
 
-        /* Buttons */
         div.stButton > button {{
             border-radius: 999px;
             border: 1px solid {DEEP_GREEN};
             color: {DEEP_GREEN};
             background: white;
             font-weight: 700;
-            padding: 0.45rem 0.9rem;
+            padding: 0.42rem 0.8rem;
+            min-height: 2.35rem;
         }}
 
         div.stButton > button:hover {{
@@ -209,7 +221,19 @@ st.markdown(
             color: {DEEP_GREEN};
         }}
 
-        /* Expander */
+        div[data-testid="stForm"] {{
+            border: 0;
+            padding: 0;
+        }}
+
+        [data-testid="stChatMessage"] {{
+            border: 1px solid {BORDER};
+            border-radius: 14px;
+            padding: 0.15rem 0.4rem;
+            margin-bottom: 0.45rem;
+            background: white;
+        }}
+
         details {{
             background: white;
             border: 1px solid {BORDER};
@@ -217,11 +241,9 @@ st.markdown(
             padding: 4px 10px;
         }}
 
-        /* Chat messages */
-        [data-testid="stChatMessage"] {{
-            border-radius: 16px;
-            border: 1px solid {BORDER};
-            padding: 0.2rem 0.5rem;
+        /* Improve muted text contrast */
+        .stCaption, [data-testid="stCaptionContainer"] {{
+            color: {MUTED} !important;
         }}
 
         /* Hide Streamlit chrome */
@@ -266,9 +288,7 @@ st.markdown(
     <div class="hero">
         <div class="hero-kicker">Merchant intelligence · weekly briefing</div>
         <div class="hero-title">Merchant Weekly Intelligence</div>
-        <div class="hero-subtitle">
-            Turning payment data into useful merchant insights.
-        </div>
+        <div class="hero-subtitle">Your weekly payment-data briefing.</div>
         <div class="hero-meta">Week ending {SNAPSHOT_DATE} · POC demo</div>
     </div>
     """,
@@ -291,9 +311,8 @@ with c1:
             <div class="insight-label">What changed?</div>
             <div class="insight-big">Sales +{sales_change:.1f}%</div>
             <div class="insight-copy">
-                Mainly driven by <b>{transactions_change:.1f}% more transactions</b>.
-                Average ticket changed only <b>{avg_ticket_change:.1f}%</b>.
-                Sales are <b>{sales_yoy_change:.1f}% above</b> the same period last year.
+                Driven mainly by <b>{transactions_change:.1f}% more transactions</b>.
+                Average ticket changed <b>{avg_ticket_change:.1f}%</b>.
             </div>
         </div>
         """,
@@ -303,10 +322,9 @@ with c1:
     st.markdown(
         f"""
         <div class="insight-card neutral">
-            <div class="insight-label">What should I expect next?</div>
+            <div class="insight-label">4-week outlook</div>
             <div class="insight-big">{forecast_4w_sales:.1f}K</div>
             <div class="insight-copy">
-                Forecast card sales for the next four weeks:
                 <b>{abs(forecast_change):.1f}% below</b> the recent four weeks.
             </div>
             <div class="status-pill">{forecast_status}</div>
@@ -319,12 +337,11 @@ with c2:
     st.markdown(
         f"""
         <div class="insight-card neutral">
-            <div class="insight-label">How important are regular payment relationships?</div>
+            <div class="insight-label">Regular payment activity</div>
             <div class="insight-big">{regular_sales_share:.1f}% of sales</div>
             <div class="insight-copy">
                 Active regular cards generate most sales.
-                <b>{retention_rate:.1f}%</b> of cards from the previous four-week period
-                were seen again in the recent four weeks.
+                <b>{retention_rate:.1f}%</b> of previous-period cards returned.
             </div>
         </div>
         """,
@@ -334,12 +351,12 @@ with c2:
     st.markdown(
         f"""
         <div class="insight-card neutral">
-            <div class="insight-label">Is anything going wrong in payments?</div>
+            <div class="insight-label">Payment health</div>
             <div class="insight-big">Broadly stable</div>
             <div class="insight-copy">
-                Payment error rate is <b>{payment_error_rate:.1f}%</b>
-                versus <b>{previous_error_rate:.1f}%</b> previously.
-                Refund rate is <b>{refund_rate:.1f}%</b>.
+                Errors: <b>{payment_error_rate:.1f}%</b>
+                (previously {previous_error_rate:.1f}%).
+                Refunds: <b>{refund_rate:.1f}%</b>.
             </div>
         </div>
         """,
@@ -355,8 +372,16 @@ st.subheader("Sales trend and 4-week outlook")
 
 chart_df = pd.DataFrame(
     {
-        "Period": ["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks"],
-        "Sales": [previous_4w_sales, recent_4w_sales, forecast_4w_sales],
+        "Period": [
+            "Previous 4 weeks",
+            "Recent 4 weeks",
+            "Next 4 weeks\nForecast",
+        ],
+        "Sales": [
+            previous_4w_sales,
+            recent_4w_sales,
+            forecast_4w_sales,
+        ],
         "Label": [
             f"{previous_4w_sales:.1f}K",
             f"{recent_4w_sales:.1f}K",
@@ -372,23 +397,38 @@ bar = (
     .encode(
         x=alt.X(
             "Period:N",
-            sort=["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks"],
+            sort=[
+                "Previous 4 weeks",
+                "Recent 4 weeks",
+                "Next 4 weeks\nForecast",
+            ],
             title=None,
-            axis=alt.Axis(labelAngle=0, labelColor=MUTED, labelFontSize=12),
+            axis=alt.Axis(
+                labelAngle=0,
+                labelColor=MUTED,
+                labelFontSize=12,
+                labelPadding=8,
+            ),
         ),
         y=alt.Y(
             "Sales:Q",
             title="Card sales (000s)",
-            axis=alt.Axis(titleColor=MUTED, labelColor=MUTED),
+            axis=alt.Axis(
+                titleColor=MUTED,
+                labelColor=MUTED,
+            ),
             scale=alt.Scale(zero=True),
         ),
         color=alt.Color(
             "Type:N",
             scale=alt.Scale(
                 domain=["Actual", "Forecast"],
-                range=[MID_GREEN, DEEP_GREEN],
+                range=[MID_GREEN, PALE_GREEN],
             ),
-            legend=None,
+            legend=alt.Legend(
+                title=None,
+                orient="top-right",
+            ),
         ),
         tooltip=[
             alt.Tooltip("Period:N", title="Period"),
@@ -400,11 +440,20 @@ bar = (
 
 labels = (
     alt.Chart(chart_df)
-    .mark_text(dy=-12, fontSize=14, fontWeight="bold", color=DEEP_GREEN)
+    .mark_text(
+        dy=-12,
+        fontSize=14,
+        fontWeight="bold",
+        color=DEEP_GREEN,
+    )
     .encode(
         x=alt.X(
             "Period:N",
-            sort=["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks"],
+            sort=[
+                "Previous 4 weeks",
+                "Recent 4 weeks",
+                "Next 4 weeks\nForecast",
+            ],
         ),
         y="Sales:Q",
         text="Label:N",
@@ -413,9 +462,13 @@ labels = (
 
 chart = (
     (bar + labels)
-    .properties(height=300)
+    .properties(height=285)
     .configure_view(strokeWidth=0)
-    .configure_axis(gridColor="#E6ECE8", domain=False, tickSize=0)
+    .configure_axis(
+        gridColor="#E6ECE8",
+        domain=False,
+        tickSize=0,
+    )
 )
 
 st.altair_chart(chart, use_container_width=True)
@@ -431,55 +484,30 @@ st.markdown(
     """
     <div class="assistant-intro">
         <div class="assistant-badge">MERCHANT INSIGHTS</div>
-        <div>
+        <div class="assistant-copy">
             Ask about this week's performance, the 4-week outlook,
             regular payment activity, or payment health.
-            The assistant explains calculated facts only — it does not invent causes,
-            identify individual cards, or give financial advice.
+            The assistant explains calculated facts only.
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# Conversation memory for current browser session
+# Session state
 if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": (
-                "What would you like to know about your business this week?"
-            ),
-        }
-    ]
+    st.session_state.messages = []
 
-# Quick prompts
-quick_cols = st.columns(4)
-quick_prompts = [
-    "What changed this week?",
-    "What should I expect next?",
-    "How important are regular cards?",
-    "Any payment issues?",
-]
-
-for col, label in zip(quick_cols, quick_prompts):
-    with col:
-        if st.button(label, use_container_width=True):
-            st.session_state.pending_prompt = label
-
-# Display conversation
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+if "pending_prompt" not in st.session_state:
+    st.session_state.pending_prompt = None
 
 def merchant_answer(prompt: str) -> str:
     q = prompt.lower().strip()
 
-    # Weekly summary
     if (
         "attention" in q
         or "summary" in q
-        or "this week" in q and "changed" not in q
+        or ("this week" in q and "changed" not in q)
     ):
         return (
             f"Sales increased {sales_change:.1f}% versus the previous four weeks, "
@@ -487,11 +515,9 @@ def merchant_answer(prompt: str) -> str:
             f"The next four weeks are forecast at about {forecast_4w_sales:.1f}K "
             f"and remain within the merchant's usual historical range. "
             f"Active regular cards generate about {regular_sales_share:.1f}% of sales. "
-            f"Payment health is broadly stable, with an error rate of "
-            f"{payment_error_rate:.1f}%."
+            f"Payment health is broadly stable."
         )
 
-    # What changed
     if (
         "changed" in q
         or "change" in q
@@ -507,7 +533,6 @@ def merchant_answer(prompt: str) -> str:
             f"Sales are also {sales_yoy_change:.1f}% above the same period last year."
         )
 
-    # Forecast
     if (
         "expect" in q
         or "forecast" in q
@@ -518,11 +543,10 @@ def merchant_answer(prompt: str) -> str:
         return (
             f"The next four weeks are forecast at about {forecast_4w_sales:.1f}K "
             f"in card sales. That is {abs(forecast_change):.1f}% below the recent "
-            f"four weeks, but the forecast is still within this merchant's usual "
+            f"four weeks, but the forecast remains within this merchant's usual "
             f"historical range. This is a forecast, not a certainty."
         )
 
-    # Regular payment relationships
     if (
         "regular" in q
         or "return" in q
@@ -539,7 +563,6 @@ def merchant_answer(prompt: str) -> str:
             f"These are payment-card relationships, not verified unique customers."
         )
 
-    # Payment health
     if (
         "payment" in q
         or "error" in q
@@ -554,7 +577,6 @@ def merchant_answer(prompt: str) -> str:
             f"No refund issue is visible in this snapshot."
         )
 
-    # Guardrail / unsupported
     return (
         "I can explain four things from the current payment-data analysis: "
         "what changed, the next four-week outlook, regular payment activity, "
@@ -562,22 +584,85 @@ def merchant_answer(prompt: str) -> str:
         "external causes such as inventory, marketing, competitors, or economic events."
     )
 
-# Quick-prompt handling
-prompt = st.session_state.pop("pending_prompt", None)
+def submit_prompt(prompt_text: str):
+    prompt_text = prompt_text.strip()
+    if not prompt_text:
+        return
 
-# Free-text chat
-typed_prompt = st.chat_input("Ask about your business this week...")
-if typed_prompt:
-    prompt = typed_prompt
+    st.session_state.messages.append(
+        {"role": "user", "content": prompt_text}
+    )
 
-if prompt:
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append(
+        {"role": "assistant", "content": merchant_answer(prompt_text)}
+    )
 
-    answer = merchant_answer(prompt)
+    # Keep only the latest 3 user/assistant exchanges = 6 messages.
+    st.session_state.messages = st.session_state.messages[-6:]
 
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+# Quick prompts — 2x2 to avoid truncation
+q1, q2 = st.columns(2)
+with q1:
+    if st.button("What changed?", use_container_width=True):
+        submit_prompt("What changed?")
+        st.rerun()
+with q2:
+    if st.button("4-week outlook?", use_container_width=True):
+        submit_prompt("What should I expect next?")
+        st.rerun()
 
-    st.rerun()
+q3, q4 = st.columns(2)
+with q3:
+    if st.button("Regular cards?", use_container_width=True):
+        submit_prompt("How important are regular cards?")
+        st.rerun()
+with q4:
+    if st.button("Payment issues?", use_container_width=True):
+        submit_prompt("Are there any payment issues?")
+        st.rerun()
+
+# Conversation + input kept together
+st.markdown('<div class="chat-shell">', unsafe_allow_html=True)
+
+if not st.session_state.messages:
+    with st.chat_message("assistant", avatar="💬"):
+        st.write("What would you like to know about your business this week?")
+else:
+    for message in st.session_state.messages:
+        avatar = "●" if message["role"] == "user" else "💬"
+        with st.chat_message(message["role"], avatar=avatar):
+            st.write(message["content"])
+
+with st.form("merchant_chat_form", clear_on_submit=True):
+    input_col, send_col = st.columns([8, 1])
+    with input_col:
+        typed_prompt = st.text_input(
+            "Ask about your business this week",
+            placeholder="Ask about your business this week...",
+            label_visibility="collapsed",
+        )
+    with send_col:
+        send = st.form_submit_button(
+            "Send",
+            use_container_width=True,
+        )
+
+    if send and typed_prompt.strip():
+        submit_prompt(typed_prompt)
+        st.rerun()
+
+clear_col, spacer = st.columns([1, 5])
+with clear_col:
+    if st.button("Clear chat", use_container_width=True):
+        st.session_state.messages = []
+        st.rerun()
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.caption(
+    "The assistant does not invent causes, identify individual cards, "
+    "give financial advice, or present forecasts as certainty."
+)
 
 # ============================================================
 # DETAILS — SECONDARY, COLLAPSED BY DEFAULT
@@ -650,9 +735,13 @@ with st.expander("Explore details"):
                 alt.Tooltip("Share:Q", format=".1f"),
             ],
         )
-        .properties(height=240)
+        .properties(height=235)
         .configure_view(strokeWidth=0)
-        .configure_axis(gridColor="#E6ECE8", domain=False, tickSize=0)
+        .configure_axis(
+            gridColor="#E6ECE8",
+            domain=False,
+            tickSize=0,
+        )
     )
 
     st.altair_chart(segment_chart, use_container_width=True)
