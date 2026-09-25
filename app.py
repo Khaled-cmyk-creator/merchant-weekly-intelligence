@@ -196,14 +196,6 @@ st.markdown(
             font-size: 0.91rem;
         }}
 
-        .chat-shell {{
-            background: white;
-            border: 1px solid {BORDER};
-            border-radius: 16px;
-            padding: 12px 14px 6px 14px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-        }}
 
         div.stButton > button {{
             border-radius: 999px;
@@ -622,42 +614,43 @@ with q4:
         st.rerun()
 
 # Conversation + input kept together
-st.markdown('<div class="chat-shell">', unsafe_allow_html=True)
+with st.container(border=True):
 
-if not st.session_state.messages:
-    with st.chat_message("assistant", avatar="💬"):
-        st.write("What would you like to know about your business this week?")
-else:
-    for message in st.session_state.messages:
-        avatar = "●" if message["role"] == "user" else "💬"
-        with st.chat_message(message["role"], avatar=avatar):
-            st.write(message["content"])
+    if not st.session_state.messages:
+        with st.chat_message("assistant"):
+            st.write("What would you like to know about your business this week?")
+    else:
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
 
-with st.form("merchant_chat_form", clear_on_submit=True):
-    input_col, send_col = st.columns([8, 1])
-    with input_col:
-        typed_prompt = st.text_input(
-            "Ask about your business this week",
-            placeholder="Ask about your business this week...",
-            label_visibility="collapsed",
-        )
-    with send_col:
-        send = st.form_submit_button(
-            "Send",
-            use_container_width=True,
-        )
+    with st.form("merchant_chat_form", clear_on_submit=True):
+        input_col, send_col = st.columns([8, 1])
 
-    if send and typed_prompt.strip():
-        submit_prompt(typed_prompt)
-        st.rerun()
+        with input_col:
+            typed_prompt = st.text_input(
+                "Ask about your business this week",
+                placeholder="Ask about your business this week...",
+                label_visibility="collapsed",
+            )
 
-clear_col, spacer = st.columns([1, 5])
-with clear_col:
-    if st.button("Clear chat", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
+        with send_col:
+            send = st.form_submit_button(
+                "Send",
+                use_container_width=True,
+            )
 
-st.markdown("</div>", unsafe_allow_html=True)
+        if send and typed_prompt.strip():
+            submit_prompt(typed_prompt)
+            st.rerun()
+
+    clear_col, spacer = st.columns([1, 5])
+
+    with clear_col:
+        if st.button("Clear chat", use_container_width=True):
+            st.session_state.messages = []
+            st.rerun()
+
 
 st.caption(
     "The assistant does not invent causes, identify individual cards, "
