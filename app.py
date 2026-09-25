@@ -1,12 +1,7 @@
 
 import streamlit as st
 import pandas as pd
-
-# ---------------------------------------------------------
-# Merchant Weekly Intelligence — simple one-merchant MVP
-# Uses the representative merchant results from the POC.
-# No live bank data and no LLM/API are used in this version.
-# ---------------------------------------------------------
+import altair as alt
 
 st.set_page_config(
     page_title="Merchant Weekly Intelligence",
@@ -14,7 +9,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Representative merchant snapshot from the analysis
+# ---------------------------------------------------------
+# Representative merchant snapshot from the POC
+# ---------------------------------------------------------
 SNAPSHOT_DATE = "6 Oct 2019"
 
 sales_change = 11.8
@@ -36,193 +33,200 @@ payment_error_rate = 1.6
 previous_error_rate = 1.4
 refund_rate = 0.0
 
-# -------------------------
+# ---------------------------------------------------------
 # Header
-# -------------------------
-
+# ---------------------------------------------------------
 st.title("Merchant Weekly Intelligence")
-st.caption(
-    "A simple weekly view built from payment data • "
-    f"Representative merchant snapshot: {SNAPSHOT_DATE}"
-)
+st.caption(f"Week ending {SNAPSHOT_DATE}")
 
-st.info(
-    "POC demo using a public synthetic payment dataset. "
-    "Values are shown in the dataset's original currency."
-)
+# ---------------------------------------------------------
+# Weekly attention summary
+# ---------------------------------------------------------
+st.subheader("What needs attention this week?")
 
-# -------------------------
-# 1. What changed?
-# -------------------------
+c1, c2 = st.columns(2)
 
-st.subheader("1. What changed?")
-
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric("Sales", f"+{sales_change:.1f}%", "vs previous 4 weeks")
-c2.metric("Transactions", f"+{transactions_change:.1f}%", "vs previous 4 weeks")
-c3.metric("Average ticket", f"+{avg_ticket_change:.1f}%", "vs previous 4 weeks")
-c4.metric("Sales", f"+{sales_yoy_change:.1f}%", "vs same period last year")
-
-st.caption(
-    "Recent growth came mainly from higher transaction volume rather than "
-    "a major increase in average ticket."
-)
-
-# -------------------------
-# 2. Next 4 weeks
-# -------------------------
-
-st.divider()
-st.subheader("2. What should I expect next?")
-
-left, right = st.columns([1, 2])
-
-with left:
-    st.metric(
-        "Next 4 weeks forecast",
-        f"{forecast_4w_sales:.1f}K",
-        f"{forecast_change:.1f}% vs recent 4 weeks"
+with c1:
+    st.success(
+        f"**Sales increased {sales_change:.1f}%** vs previous 4 weeks  \n"
+        f"Mainly driven by **{transactions_change:.1f}% more transactions**; "
+        f"average ticket changed only **{avg_ticket_change:.1f}%**."
     )
-    st.success(forecast_status)
 
-with right:
-    forecast_df = pd.DataFrame({
-        "Period": ["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks forecast"],
-        "Sales (000s)": [previous_4w_sales, recent_4w_sales, forecast_4w_sales]
-    }).set_index("Period")
+    st.info(
+        f"**4-week outlook: {forecast_4w_sales:.1f}K**  \n"
+        f"{forecast_status}. "
+        f"Forecast is **{abs(forecast_change):.1f}% below** the recent 4 weeks."
+    )
 
-    st.bar_chart(forecast_df, use_container_width=True)
+with c2:
+    st.info(
+        f"**Regular payment activity remains important**  \n"
+        f"Active regular cards generate about **{regular_sales_share:.1f}% of sales**. "
+        f"Returning-card rate: **{retention_rate:.1f}%**."
+    )
 
-# -------------------------
-# 3. Relationship health
-# -------------------------
+    st.info(
+        f"**Payments are broadly stable**  \n"
+        f"Error rate: **{payment_error_rate:.1f}%** "
+        f"(previous period: {previous_error_rate:.1f}%). "
+        f"Refund rate: **{refund_rate:.1f}%**."
+    )
 
-st.divider()
-st.subheader("3. Are my regular payment relationships healthy?")
+# ---------------------------------------------------------
+# Simple trend + forecast chart
+# ---------------------------------------------------------
+st.subheader("Sales trend and 4-week outlook")
 
-r1, r2, r3 = st.columns(3)
-
-r1.metric("Previous-period card retention", f"{retention_rate:.1f}%")
-r2.metric("Active cards", f"{active_cards:,}")
-r3.metric("Sales from active regular cards", f"{regular_sales_share:.1f}%")
-
-st.caption(
-    "Cards are anonymous payment-card relationships, not verified unique customers. "
-    "One person may use more than one card."
-)
-
-segments = pd.DataFrame({
-    "Card group": ["Active regular cards", "Less recent cards", "Occasional cards"],
-    "Share of cards": [30.8, 46.2, 23.0],
-    "Share of sales": [67.8, 28.6, 3.6]
+chart_df = pd.DataFrame({
+    "Period": ["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks"],
+    "Sales": [previous_4w_sales, recent_4w_sales, forecast_4w_sales],
+    "Label": [f"{previous_4w_sales:.1f}K",
+              f"{recent_4w_sales:.1f}K",
+              f"{forecast_4w_sales:.1f}K"]
 })
 
-st.dataframe(
-    segments,
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-        "Share of cards": st.column_config.ProgressColumn(
-            "Share of cards", min_value=0, max_value=100, format="%.1f%%"
-        ),
-        "Share of sales": st.column_config.ProgressColumn(
-            "Share of sales", min_value=0, max_value=100, format="%.1f%%"
-        ),
-    }
+base = alt.Chart(chart_df).encode(
+    x=alt.X(
+        "Period:N",
+        sort=["Previous 4 weeks", "Recent 4 weeks", "Next 4 weeks"],
+        title=None,
+        axis=alt.Axis(labelAngle=0)
+    ),
+    y=alt.Y("Sales:Q", title="Card sales (000s)")
 )
 
-# -------------------------
-# 4. Payment health
-# -------------------------
-
-st.divider()
-st.subheader("4. Is anything going wrong in payments?")
-
-p1, p2 = st.columns(2)
-
-p1.metric(
-    "Payment error rate",
-    f"{payment_error_rate:.1f}%",
-    f"{payment_error_rate - previous_error_rate:+.1f} pp vs previous period"
+bars = base.mark_bar().encode(
+    tooltip=[
+        alt.Tooltip("Period:N"),
+        alt.Tooltip("Sales:Q", format=".1f")
+    ]
 )
 
-p2.metric(
-    "Refund rate",
-    f"{refund_rate:.1f}%"
+labels = base.mark_text(dy=-10, fontSize=14).encode(
+    text="Label:N"
 )
 
-st.caption(
-    "Payment health is broadly stable in this representative snapshot. "
-    "Refunds are estimated from negative transaction amounts in the POC dataset."
+st.altair_chart(
+    (bars + labels).properties(height=300),
+    use_container_width=True
 )
 
-# -------------------------
-# Merchant Insights Assistant
-# -------------------------
+# ---------------------------------------------------------
+# Ask Merchant Insights — moved up
+# ---------------------------------------------------------
+st.subheader("Ask Merchant Insights")
 
-st.divider()
-st.subheader("Merchant Insights Assistant")
-st.caption(
-    "The assistant explains calculated facts only. "
-    "It does not invent causes, identify individual cards, or give financial advice."
+question = st.selectbox(
+    "Choose a question",
+    [
+        "What deserves my attention this week?",
+        "What changed?",
+        "What should I expect next?",
+        "How healthy is my regular payment activity?",
+        "Are there any payment issues?"
+    ],
+    label_visibility="collapsed"
 )
-
-questions = [
-    "What deserves my attention this week?",
-    "What changed?",
-    "What should I expect next?",
-    "How healthy are my regular payment relationships?",
-    "Is anything going wrong in payments?"
-]
-
-question = st.selectbox("Choose a question", questions)
 
 if st.button("Ask", type="primary"):
     if question == "What changed?":
         answer = (
             f"Sales increased {sales_change:.1f}% versus the previous 4 weeks. "
-            f"Transactions increased {transactions_change:.1f}% and average ticket "
-            f"increased {avg_ticket_change:.1f}%. Sales are {sales_yoy_change:.1f}% "
+            f"Transactions increased {transactions_change:.1f}%, while average ticket "
+            f"increased only {avg_ticket_change:.1f}%. Sales are {sales_yoy_change:.1f}% "
             f"above the same period last year."
         )
-
     elif question == "What should I expect next?":
         answer = (
-            f"The next 4-week card-sales forecast is about {forecast_4w_sales:.1f}K, "
-            f"which is {abs(forecast_change):.1f}% below the recent 4 weeks. "
-            f"The forecast remains within this merchant's usual historical range."
+            f"The next 4-week card-sales forecast is about {forecast_4w_sales:.1f}K. "
+            f"This is {abs(forecast_change):.1f}% below the recent 4 weeks, "
+            f"but still {forecast_status.lower()}."
         )
-
-    elif question == "How healthy are my regular payment relationships?":
+    elif question == "How healthy is my regular payment activity?":
         answer = (
-            f"Previous-period card retention is {retention_rate:.1f}%. "
-            f"There are {active_cards:,} active cards in the recent 4 weeks. "
-            f"Active regular cards account for about {regular_sales_share:.1f}% "
-            f"of trailing-12-month card sales."
+            f"Active regular cards account for about {regular_sales_share:.1f}% of sales. "
+            f"The returning-card rate is {retention_rate:.1f}%, with {active_cards:,} "
+            f"active cards in the recent 4 weeks."
         )
-
-    elif question == "Is anything going wrong in payments?":
+    elif question == "Are there any payment issues?":
         answer = (
-            f"The payment error rate is {payment_error_rate:.1f}%, compared with "
-            f"{previous_error_rate:.1f}% in the previous period. "
-            f"The refund rate is {refund_rate:.1f}%. Payment health is broadly stable."
+            f"Payment health is broadly stable. The error rate is {payment_error_rate:.1f}% "
+            f"versus {previous_error_rate:.1f}% previously. "
+            f"The refund rate is {refund_rate:.1f}%."
         )
-
     else:
         answer = (
-            f"Sales increased {sales_change:.1f}% versus the previous 4 weeks, "
-            f"mainly because transactions increased {transactions_change:.1f}%. "
-            f"The next 4 weeks are forecast at about {forecast_4w_sales:.1f}K and "
-            f"remain within the merchant's usual historical range. "
-            f"Previous-period card retention is {retention_rate:.1f}%, while "
-            f"payment errors are broadly stable at {payment_error_rate:.1f}%."
+            f"Sales increased {sales_change:.1f}% versus the previous 4 weeks, mainly "
+            f"because transactions increased {transactions_change:.1f}%. "
+            f"The next 4 weeks are forecast at about {forecast_4w_sales:.1f}K and remain "
+            f"within the merchant's usual historical range. "
+            f"Regular payment activity generates about {regular_sales_share:.1f}% of sales, "
+            f"while payment health remains broadly stable."
         )
-
     st.write(answer)
 
-st.divider()
+# ---------------------------------------------------------
+# Details — hidden unless merchant wants them
+# ---------------------------------------------------------
+with st.expander("Explore details"):
+
+    st.markdown("### What changed?")
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Sales", f"+{sales_change:.1f}%", "vs previous 4 weeks")
+    m2.metric("Transactions", f"+{transactions_change:.1f}%", "vs previous 4 weeks")
+    m3.metric("Average ticket", f"+{avg_ticket_change:.1f}%", "vs previous 4 weeks")
+    m4.metric("Sales vs last year", f"+{sales_yoy_change:.1f}%")
+
+    st.markdown("### Regular payment activity")
+    r1, r2, r3 = st.columns(3)
+    r1.metric("Returning-card rate", f"{retention_rate:.1f}%")
+    r2.metric("Active cards", f"{active_cards:,}")
+    r3.metric("Sales from active regular cards", f"{regular_sales_share:.1f}%")
+
+    segments = pd.DataFrame({
+        "Card group": ["Active regular cards", "Less recent cards", "Occasional cards"],
+        "Share of cards": [30.8, 46.2, 23.0],
+        "Share of sales": [67.8, 28.6, 3.6]
+    })
+
+    seg_long = segments.melt(
+        id_vars="Card group",
+        value_vars=["Share of cards", "Share of sales"],
+        var_name="Measure",
+        value_name="Share"
+    )
+
+    seg_chart = alt.Chart(seg_long).mark_bar().encode(
+        y=alt.Y("Card group:N", title=None),
+        x=alt.X("Share:Q", title="Share (%)"),
+        xOffset="Measure:N",
+        color=alt.Color("Measure:N", legend=alt.Legend(title=None)),
+        tooltip=[
+            "Card group:N",
+            "Measure:N",
+            alt.Tooltip("Share:Q", format=".1f")
+        ]
+    ).properties(height=220)
+
+    st.altair_chart(seg_chart, use_container_width=True)
+
+    st.markdown("### Payment details")
+    p1, p2 = st.columns(2)
+    p1.metric(
+        "Payment error rate",
+        f"{payment_error_rate:.1f}%",
+        f"{payment_error_rate - previous_error_rate:+.1f} pp vs previous period",
+        delta_color="inverse"
+    )
+    p2.metric("Refund rate", f"{refund_rate:.1f}%")
+
+    st.caption(
+        "Cards represent anonymous payment-card relationships, not verified unique customers. "
+        "Refunds are estimated from negative transaction amounts in this POC dataset."
+    )
+
 st.caption(
-    "MVP scope: one representative established merchant. "
-    "Next version can connect these same components to outputs for all eligible merchants."
+    "POC demo using a public synthetic payment dataset. "
+    "The assistant explains calculated facts only and does not invent causes or give financial advice."
 )
